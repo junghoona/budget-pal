@@ -44,9 +44,7 @@ function CardBanner() {
         </p>
         <div className='flex flex-row flex-wrap
         sm:mt-10 mt-6'>
-          <Link to=''>
-            <Button styles='mt-10 ml-10' content='Add New Card' />
-          </Link>
+          <Button styles='mt-10 ml-10' content='Add New Card' />
           <Button styles='mt-10 ml-10' content='View all Cards' />
         </div>
       </div>
