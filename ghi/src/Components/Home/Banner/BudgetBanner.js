@@ -1,7 +1,9 @@
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+import Popup from 'reactjs-popup';
 import Button from '../../Button';
 import React, { useEffect } from 'react';
+import BudgetForm from '../../Budgets/BudgetForm';
 import styles, { layout } from "../../../style";
 import budget from "../../../Assets/budget-banner.png";
 
@@ -28,7 +30,22 @@ function BudgetBanner() {
         </p>
         <div className='flex flex-row flex-wrap
         sm:mt-10 mt-6'>
-          <Button styles='mt-10 mr-10' content='Create Budget'/>
+          <Popup
+            trigger={<button>
+              <Button styles='mt-10 mr-10'
+              content='Add Budget'/></button>
+            }
+            modal
+            nested
+          >
+            {(close) => (
+              <div>
+                <div>
+                  <BudgetForm close={close} />
+                </div>
+              </div>
+            )}
+          </Popup>
           <Button styles='mt-10 mr-10' content='View all Budgets'/>
         </div>
       </div>
