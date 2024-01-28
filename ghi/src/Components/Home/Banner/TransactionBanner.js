@@ -1,8 +1,10 @@
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import Button from "../../Button";
+import Popup from 'reactjs-popup';
 import React, { useEffect } from 'react';
 import styles, { layout } from "../../../style";
+import TransactionForm from '../../Transactions/TransactionForm';
 import transaction from "../../../Assets/transaction-banner.png";
 
 function TransactionBanner() {
@@ -37,7 +39,22 @@ function TransactionBanner() {
                 </p>
                 <div className='flex flex-row flex-wrap
                 sm:mt-10 mt-6'>
-                    <Button styles='mt-10 ml-10' content='Add New Transaction' />
+                    <Popup
+                        trigger={<button>
+                            <Button styles='mt-10 ml-10'
+                            content='Add Transaction' /></button>
+                        }
+                        modal
+                        nested
+                    >
+                        {(close) => (
+                            <div>
+                                <div>
+                                    <TransactionForm close={close}/>
+                                </div>
+                            </div>
+                        )}
+                    </Popup>
                     <Button styles='mt-10 ml-10' content='View All Transactions' />
                 </div>
             </div>

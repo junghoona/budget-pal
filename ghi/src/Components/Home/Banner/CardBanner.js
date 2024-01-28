@@ -1,7 +1,9 @@
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+import Popup from 'reactjs-popup';
 import Button from "../../Button";
 import React, { useEffect } from 'react';
+import CardForm from '../../Cards/CardForm';
 import styles, { layout } from "../../../style";
 import card from "../../../Assets/card-banner.png";
 
@@ -44,7 +46,22 @@ function CardBanner() {
         </p>
         <div className='flex flex-row flex-wrap
         sm:mt-10 mt-6'>
-          <Button styles='mt-10 ml-10' content='Add New Card' />
+          <Popup
+            trigger={<button>
+              <Button styles='mt-10 ml-10'
+              content='Add Card' /></button>
+            }
+            modal
+            nested
+          >
+            {(close) => (
+            <div>
+              <div>
+                <CardForm close={close}/>
+              </div>
+            </div>
+            )}
+          </Popup>
           <Button styles='mt-10 ml-10' content='View all Cards' />
         </div>
       </div>

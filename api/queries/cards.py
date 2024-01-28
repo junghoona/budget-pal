@@ -1,5 +1,5 @@
 from psycopg_pool import ConnectionPool
-from typing import List, Union
+from typing import List, Optional, Union
 from pydantic import BaseModel
 from datetime import datetime
 import os
@@ -20,7 +20,7 @@ class CardIn(BaseModel):
     minimum_payment: int
     credit_limit: int
     card_number: str
-    expiration_date: str
+    expiration_date: Optional[datetime]
     security_cvc: int
 
 
@@ -33,7 +33,7 @@ class CardOut(BaseModel):
     minimum_payment: int
     credit_limit: int
     card_number: str
-    expiration_date: datetime
+    expiration_date: Optional[datetime]
     security_cvc: int
 
 
@@ -80,6 +80,7 @@ class CardRepository:
                 )
                 id = result.fetchone()[0]
                 data = card.dict()
+                print("DATA: ", data)
                 return CardOut(id=id, **data)
 
     def get_all(self) -> Union[List[CardOut], Error]:

@@ -42,9 +42,9 @@ def get_budgets_in_card(
     repo: BudgetRepository = Depends()
 ):
     result = repo.get_card(card_id)
-    if result is None or result == []:
+    if result is None:
         response.status_code = 404
-        return {"message": "Invalid request - no budgets have been created for selected card"}
+        return {"message": "Invalid card ID. Card does not exist in database"}
     return result
 
 
