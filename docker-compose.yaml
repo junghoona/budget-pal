@@ -11,6 +11,8 @@ services:
       - budget-pal:/var/lib/postgresql/data
     ports:
       - 15432:5432
+    env_file:
+      - source .env
     environment:
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_USER: ${POSTGRES_USER}
@@ -24,6 +26,8 @@ services:
       - ./api:/app
     ports:
       - 8000:8000
+    env_file:
+      - source .env
     environment:
       SIGNING_KEY: ${SIGNING_KEY}
       DATABASE_URL: ${DATABASE_URL}
@@ -39,6 +43,8 @@ services:
       - ./ghi:/app
     ports:
       - "3000:3000"
+    env_file:
+      - source .env
     environment:
       HOST_OS: ${OS}
       NODE_ENV: development
