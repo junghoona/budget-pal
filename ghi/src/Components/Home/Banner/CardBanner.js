@@ -17,7 +17,7 @@ function CardBanner() {
       className={`${layout.sectionReverse}
       rounded-[20px] bg-teal-900 shadow-lg mb-10`}
       data-aos="fade-right"
-      data-aos-duration="1500"
+      data-aos-duration="1000"
     >
       <div className={layout.sectionImgReverse}>
         <img src={card} alt='card' className='w-[75%]

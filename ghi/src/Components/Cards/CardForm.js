@@ -54,7 +54,6 @@ function CardForm({ close }) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // additional logic here...
         const data = {
             bank: bank,
             name: cardName,
@@ -65,8 +64,6 @@ function CardForm({ close }) {
             expiration_date: expirationDate,
             security_cvc: cvc,
         };
-
-        console.log("DATA: ", data);
 
         const response = await fetch(
             `${process.env.REACT_APP_API_HOST}/api/cards`,

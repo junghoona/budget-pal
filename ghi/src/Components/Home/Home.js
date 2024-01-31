@@ -31,10 +31,9 @@ const Home = () => {
         <div className='bg-teal-800 w-full overflow-hidden'>
             <div className={`${styles.paddingX} ${styles.flexCenter}`}>
                 <div className={`${styles.boxWidth}`}>
-                <Navbar/>
+                    <Navbar/>
                 </div>
             </div>
-
             <div className={`bg-teal-800 ${styles.flexStart}`}>
                 <div className={`${styles.boxWidth}`}>
                     <Hero/>
