@@ -15,16 +15,10 @@ function BudgetForm({ close }) {
         setName(value);
     };
 
-    const handleCategoryChange = (e) => {
-        const value = e.target.value;
-        setCategory(value);
-    }
-
     const handleAmountChange = (e) => {
         const value = e.target.value;
         setAmount(value);
     }
-
     
     const fetchData = async () => {
         const response = await fetch(
@@ -50,6 +44,7 @@ function BudgetForm({ close }) {
             amount: amount,
             card_id: card,
         };
+
         const response = await fetch(
             `${process.env.REACT_APP_API_HOST}/api/budgets`,
             {
@@ -150,7 +145,7 @@ function BudgetForm({ close }) {
                                     Category
                                 </label>
                                 <select
-                                    onChange={handleCategoryChange}
+                                    onChange={(e) => (setCategory(e.target.value))}
                                     required
                                     className="form-select block w-full
                                     bg-gray-200 text-gray-700 border border-gray-200
@@ -159,11 +154,11 @@ function BudgetForm({ close }) {
                                     id="category"
                                 >
                                     <option value="">Select Category</option>
-                                    <option value="shopping">Shopping</option>
-                                    <option value="personal care">Personal Care</option>
-                                    <option value="auto transport">Auto & Transport</option>
-                                    <option value="utilities">Bills & Utilities</option>
-                                    <option value="dining">Dining & Drinks</option>
+                                    <option value="Shopping">Shopping</option>
+                                    <option value="Personal Care">Personal Care</option>
+                                    <option value="Auto & Transport">Auto & Transport</option>
+                                    <option value="Bills & Utilities">Bills & Utilities</option>
+                                    <option value="Dining & Drinks">Dining & Drinks</option>
                                 </select>
                             </div>
                         </div>
