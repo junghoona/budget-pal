@@ -13,28 +13,36 @@ const Navbar = () => {
         justify-end items-center flex-1'>
             <li className={`font-poppins font-normal
             cursor-pointer text-[20px] mr-14 text-white
-            hover:text-emerald-200 transition-color duration-300`}>
+            hover:text-emerald-200 transition-color duration-300
+            nav-item`}
+            >
                 <Link to={`${process.env.PUBLIC_URL}/`}>
                     Home
                 </Link>
             </li>
             <li className={`font-poppins font-normal
             cursor-pointer text-[20px] mr-14 text-white
-            hover:text-emerald-200 transition-color duration-300`}>
+            hover:text-emerald-200 transition-color duration-300
+            nav-item`}
+            >
                 <Link to={`${process.env.PUBLIC_URL}/cards/`}>
                     Cards
                 </Link>
             </li>
             <li className={`font-poppins font-normal
             cursor-pointer text-[20px] mr-14 text-white
-            hover:text-emerald-200 transition-color duration-300`}>
+            hover:text-emerald-200 transition-color duration-300
+            nav-item`}
+            >
                 <Link to={`${process.env.PUBLIC_URL}/budgets/`}>
                     Budgets
                 </Link>
             </li>
             <li className={`font-poppins font-normal
             cursor-pointer text-[20px] mr-0 text-white
-            hover:text-emerald-200 transition-color duration-300`}>
+            hover:text-emerald-200 transition-color duration-300
+            nav-item`}
+            >
                 <Link to={`${process.env.PUBLIC_URL}/transactions/`}>
                     Transactions
                 </Link>
