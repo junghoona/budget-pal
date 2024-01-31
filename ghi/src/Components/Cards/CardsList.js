@@ -11,7 +11,7 @@ import React, { useEffect, useState } from 'react';
 
 function CardsList() {
     const [cards, setCards] = useState([]);
-
+    const [banks, setBanks] = useState([]);
     const fetchData = async () => {
         const response = await fetch(
             `${process.env.REACT_APP_API_HOST}/api/cards`
@@ -36,13 +36,11 @@ function CardsList() {
                     <Navbar />
                 </div>
             </div>
-
             <div className={`bg-teal-600 ${styles.flexStart}`}>
                 <div className={`${styles.boxWidth} mt-10 mb-10`}>
                     <Searchbar />
                 </div>
             </div>
-
             <div className={`bg-teal-600 ${styles.paddingX} ${styles.flexStart}`}>
                 <div className={`${styles.boxWidth}`}>
                     <section id="cards" className={`flex
@@ -61,13 +59,8 @@ function CardsList() {
                                 <FilterDropdown name="Bank" />
                                 <FilterDropdown name="By Budget" />
                             </div>
-                            <div className='absolute z-[0] w-[40%] h-[35%] top-0 pink__gradient' />
-                            <div className='absolute z-[1] w-[80%] h-[80%] rounded-full bottom-40 white__gradient' />
-                            <div className='absolute z-[0] w-[50%] h-[50%] right-20 bottom-20 white__gradient' />
-
                         </div>
                     </section>
-
                     <section 
                         id="features"
                         className={layout.section}
@@ -87,9 +80,7 @@ function CardsList() {
                 </div>
             </div>
             <div> 
-
                 <div className='absolute z-[0] w-[30%] h-[80%] rounded-full bottom-40 white__gradient' />
-
             </div>
         </div>
     );
