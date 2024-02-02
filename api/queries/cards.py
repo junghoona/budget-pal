@@ -37,6 +37,11 @@ class CardOut(BaseModel):
     security_cvc: int
 
 
+# Bank Output model (For Filtering List by Bank)
+class BankOut(BaseModel):
+    bank: str
+
+
 # Repository model - Query DB
 class CardRepository:
     def create(self, card: CardIn) -> Union[CardOut, Error]:
@@ -112,7 +117,28 @@ class CardRepository:
             print("ERROR: ", e)
             return {"message": "Could Not Get All Cards. Add a New Card"}
 
-    def get_bank(self, bank_name: str) -> Union[List[CardOut], Error]:
+    def get_banks(self) -> Union[List[BankOut], Error]:
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as db:
+                    db.execute(
+                        """
+                        SELECT DISTINCT bank
+                        FROM cards;
+                        """
+                    )
+                    result = []
+                    for record in db:
+                        bank = BankOut(
+                            bank=record[0]
+                        )
+                        result.append(bank)
+                    return result
+        except Exception as e:
+            print("ERROR: ", e)
+            return {"message": "Could not get all banks"}
+
+    def get_card_by_bank(self, bank_name: str) -> Union[List[CardOut], Error]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
