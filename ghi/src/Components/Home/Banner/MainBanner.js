@@ -8,18 +8,12 @@ import Button from "../../Button";
 const features = [
   {
     id: 1,
-    icon: card,
-    title: "Add a Card",
-    content: "Choose a card that you want to keepThe best credit cards offer some tantalizing combinations of promotions and prizes",
-  },
-  {
-    id: 2,
     icon: budget,
     title: "Plan a Budget",
     content: "We take proactive steps to make sure your information and transactions are secure",
   },
   {
-    id: 3,
+    id: 2,
     icon: transaction,
     title: "Record New Transactions",
     content: "Record new transactions as you spend to keep track of your spending habits. Be aware of your transaction history."

@@ -25,15 +25,6 @@ const Navbar = () => {
             hover:text-emerald-200 transition-color duration-300
             nav-item`}
             >
-                <Link to={`${process.env.PUBLIC_URL}/cards/`}>
-                    Cards
-                </Link>
-            </li>
-            <li className={`font-poppins font-normal
-            cursor-pointer text-[20px] mr-14 text-white
-            hover:text-emerald-200 transition-color duration-300
-            nav-item`}
-            >
                 <Link to={`${process.env.PUBLIC_URL}/budgets/`}>
                     Budgets
                 </Link>
@@ -76,12 +67,6 @@ const Navbar = () => {
                     </li>
                     <li className={`font-poppins font-normal
                     cursor-pointer text-[16px] mb-4 text-white`}>
-                        <Link to={`${process.env.PUBLIC_URL}/cards/`}>
-                            Cards
-                        </Link>
-                    </li>
-                    <li className={`font-poppins font-normal
-                    cursor-pointer text-[16px] mb-4 text-white`}>
                         <Link to={`${process.env.PUBLIC_URL}/budgets/`}>
                             Budgets
                         </Link>
@@ -92,7 +77,6 @@ const Navbar = () => {
                             Transactions
                         </Link>
                     </li>
-                    
                 </ul>
             </div>
         </div>

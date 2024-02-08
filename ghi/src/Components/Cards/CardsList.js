@@ -13,6 +13,10 @@ function CardsList() {
     const [cards, setCards] = useState([]);
     const [banks, setBanks] = useState([]);
     const [budgets, setBudgets] = useState([]);
+    const [filteredBudgets, setFilteredBudgets] = useState([]);
+    const [bankCards, setBankCards] = useState([]);
+    const [budgetCards, setBudgetCards] = useState([]);
+    const [filteredCards, setFilteredCards] = useState([]);
     const [bank, setBank] = useState('Bank');
     const [category, setCategory] = useState('Category');
     const [bankDropdown, setBankDropdown] = useState(false);
@@ -64,18 +68,18 @@ function CardsList() {
         setCategory(value);
     }
 
-    const filteredCards = cards.filter(card => card.bank === bank);
+    // const filteredCards = cards.filter(card => card.bank === bank);
 
-    const filteredBudgets = budgets.filter(budget => budget.category === category);
 
-    const budgetFilteredCards = filteredBudgets.flatMap((budget) => {
-        cards.filter(card => {
-            return card.id === budget.card_id 
-            })
-        }
-    );
+    // const filteredBudgets = budgets.filter(budget => budget.category === category);
 
-    console.log('FILTERED CARDS: ', budgetFilteredCards);
+
+    // const budgetFilteredCards = filteredBudgets.flatMap((budget) => {
+    //     cards.filter(card => {
+    //         return card.id === budget.card_id 
+    //         })
+    //     }
+    // );
 
 
     useEffect(() => {
@@ -84,6 +88,29 @@ function CardsList() {
         fetchBanks();
         fetchBudgets();
     }, []);
+
+    useEffect(() => {
+        const cardBankFilter = (cards) => {
+            const data = cards.filter((card) => card.bank === bank);
+            setBankCards(data);
+        };
+
+        const budgetFilter = (budgets) => {
+            const data = budgets.filter((budget) => budget.category === category);
+            setFilteredBudgets(data);
+        };
+
+        const cardBudgetFilter = (filteredBudgets) => {
+            const data = filteredBudgets.flatMap((budget) => 
+                cards.filter((card) => card.id === budget.card_id));
+            console.log('DATA: ', data);
+            setBudgetCards(data);
+        }
+
+        cardBankFilter();
+        budgetFilter();
+        cardBudgetFilter();
+    }, [bank, category]);
 
     return (
         <div className="bg-teal-600 w-full overflow-hidden">
@@ -297,27 +324,16 @@ function CardsList() {
                         <div className={layout.sectionInfo}>
                             <div className={`${layout.sectionImg}
                             flex-row space-x-40`}>
-                                {bank !== 'Bank' ? (
+                                {/* {bank !== 'Bank' && category !== 'Category' ? (
                                     filteredCards.map((card, index) => (
                                         <CardComponent key={card.id} {...
                                             card} index={index} />
                                         ))
-                                    ) : (
-                                        cards.map((card, index) => (
-                                            <CardComponent key={card.id} {...
-                                                card} index={index} />
-                                        ))
-                                    )}
-                                {category !== 'Category' ? (
-                                    budgetFilteredCards.map((card, index) => (
-                                        <CardComponent key={card.id} {...card} index={index} />
-                                    ))
-                                ) : (
-                                    cards.map((card, index) => (
-                                        <CardComponent key={card.id} {...
-                                            card} index={index} />
-                                    ))
-                                )}
+                                    ) : ({bank !== 'Bank' ? ()
+
+                                        }
+                                    )} */}
+
                             </div>
                         </div>
                     </section>
