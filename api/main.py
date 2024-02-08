@@ -1,6 +1,5 @@
 import os
 from routers import (
-    cards,
     budgets,
     transactions
 )
@@ -10,8 +9,6 @@ from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
-
-app.include_router(cards.router)
 app.include_router(budgets.router)
 app.include_router(transactions.router)
 
