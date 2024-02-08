@@ -21,7 +21,6 @@ class TransactionIn(BaseModel):
     date: Optional[datetime]
     price: int
     description: str
-    card_id: int
     budget_id: int
 
 
@@ -60,18 +59,6 @@ class TransactionRepository:
                     db.execute(
                         """
                         SELECT EXISTS (
-                            SELECT * FROM cards
-                            WHERE id = %s
-                        )
-                        """,
-                        [transaction.card_id]
-                    )
-                    card = db.fetchone()[0]
-                    if not card:
-                        return {"message": "Invalid card ID. Card does not exist in database"}
-                    db.execute(
-                        """
-                        SELECT EXISTS (
                             SELECT * FROM budgets
                             WHERE id = %s
                         )
@@ -81,18 +68,16 @@ class TransactionRepository:
                     budget = db.fetchone()[0]
                     if not budget:
                         return {"message": "Invalid budget ID. Budget does not exist in database"}
-                    # TODO: Add SQL Query logic to check if card ID contains budget ID
                     result = db.execute(
                         """
                         INSERT INTO transactions (
                             date
                           , price
                           , description
-                          , card_id
                           , budget_id
                         )
                         VALUES (
-                            %s, %s, %s, %s, %s
+                            %s, %s, %s, %s
                         )
                         RETURNING id
                         """,
@@ -100,7 +85,6 @@ class TransactionRepository:
                             transaction.date,
                             transaction.price,
                             transaction.description,
-                            transaction.card_id,
                             transaction.budget_id
                         ]
                     )
@@ -111,11 +95,10 @@ class TransactionRepository:
                         SELECT transactions.date
                              , transactions.price
                              , transactions.description
-                             , cards.bank
-                             , budgets.name
+                             , budgets.bank
+                             , budgets.category
                         FROM transactions
                         JOIN budgets ON (transactions.budget_id = budgets.id)
-                        JOIN cards ON (budgets.card_id = cards.id)
                         WHERE transactions.id = %s
                         """,
                         [id]
@@ -170,11 +153,10 @@ class TransactionRepository:
                              , transactions.date
                              , transactions.price
                              , transactions.description
-                             , cards.bank
-                             , budgets.name
+                             , budgets.bank
+                             , budgets.category
                         FROM transactions
                         JOIN budgets ON (transactions.budget_id = budgets.id)
-                        JOIN cards ON (transactions.card_id = cards.id)
                         WHERE transactions.id = %s
                         """,
                         [transaction_id]
@@ -192,72 +174,13 @@ class TransactionRepository:
             print("ERROR: ", e)
             return {"message": "Invalid Transaction ID. Transaction does not exist in database"}
 
-    def get_card_transactions(
-        self,
-        card_id: int
-    ) -> Union[List[TransactionInfoOut], Error]:
-        try:
-            with pool.connection() as conn:
-                with conn.cursor() as db:
-                    db.execute(
-                        """
-                        SELECT EXISTS (
-                            SELECT * FROM cards
-                            WHERE id = %s
-                        )
-                        """,
-                        [card_id]
-                    )
-                    card = db.fetchone()[0]
-                    if not card:
-                        return {"message": "Invalid card ID. Card does not exist in database"}
-
-                    db.execute(
-                        """
-                        SELECT transactions.id
-                             , transactions.date
-                             , transactions.price
-                             , transactions.description
-                        FROM transactions
-                        WHERE transactions.card_id = %s
-                        """,
-                        [card_id]
-                    )
-                    result = []
-                    for record in db:
-                        transaction = TransactionInfoOut(
-                            id=record[0],
-                            date=record[1],
-                            price=record[2],
-                            description=record[3]
-                        )
-                        result.append(transaction)
-                    return result
-        except Exception as e:
-            print("ERROR: ", e)
-            return {"message": "Could not get transactions"}
-
     def get_budget_transactions(
         self,
-        card_id: int,
         budget_id: int
     ) -> Union[List[TransactionInfoOut], Error]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
-                    db.execute(
-                        """
-                        SELECT EXISTS (
-                            SELECT * FROM cards
-                            WHERE id = %s
-                        )
-                        """,
-                        [card_id]
-                    )
-                    card = db.fetchone()[0]
-                    if not card:
-                        return {"message": "Invalid card ID. Card does not exist in database"}
-
                     db.execute(
                         """
                         SELECT EXISTS (
@@ -278,9 +201,9 @@ class TransactionRepository:
                              , transactions.price
                              , transactions.description
                         FROM transactions
-                        WHERE transactions.card_id = %s AND transactions.budget_id = %s
+                        WHERE transactions.budget_id = %s
                         """,
-                        [card_id, budget_id]
+                        [budget_id]
                     )
                     result = []
                     for record in db:
@@ -326,10 +249,9 @@ class TransactionRepository:
                              , transactions.price
                              , transactions.description
                              , budgets.name
-                             , cards.bank
+                             , budgets.bank
                         FROM transactions
                         JOIN budgets ON (transactions.budget_id = budgets.id)
-                        JOIN cards ON (budgets.card_id = cards.id)
                         WHERE transactions.id = %s
                         """,
                         [transaction_id]
