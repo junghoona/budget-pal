@@ -13,19 +13,21 @@ class Error(BaseModel):
 
 # Input Model
 class BudgetIn(BaseModel):
+    bank: str
+    card: str
     name: str
     category: str
     amount: int
-    card_id: int
 
 
 # Output Model
 class BudgetOut(BaseModel):
     id: int
+    bank: str
+    card: str
     name: str
     category: str
     amount: int
-    card_id: int
 
 
 # Update Input Model
@@ -35,39 +37,33 @@ class UpdateBudgetIn(BaseModel):
     amount: int
 
 
+class BankOut(BaseModel):
+    bank: str
+
+
 class BudgetRepository:
     def create(self, budget: BudgetIn) -> Union[BudgetOut, Error]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
-                    db.execute(
-                        """
-                        SELECT EXISTS (
-                            SELECT * FROM cards
-                            WHERE id = %s
-                        )
-                        """,
-                        [budget.card_id]
-                    )
-                    card = db.fetchone()[0]
-                    if not card:
-                        return {"message": "Invalid card ID. Card does not exist in database"}
                     result = db.execute(
                         """
                         INSERT INTO budgets (
-                            name
+                            bank
+                          , card
+                          , name
                           , category
                           , amount
-                          , card_id
                         )
-                        VALUES (%s, %s, %s, %s)
+                        VALUES (%s, %s, %s, %s, %s)
                         RETURNING id;
                         """,
                         [
+                            budget.bank,
+                            budget.card,
                             budget.name,
                             budget.category,
-                            budget.amount,
-                            budget.card_id
+                            budget.amount
                         ]
                     )
                     id = result.fetchone()[0]
@@ -93,10 +89,11 @@ class BudgetRepository:
                     for record in db:
                         budget = BudgetOut(
                             id=record[0],
-                            name=record[1],
-                            category=record[2],
-                            amount=record[3],
-                            card_id=record[4]
+                            bank=record[1],
+                            card=record[2],
+                            name=record[3],
+                            category=record[4],
+                            amount=record[5]
                         )
                         result.append(budget)
                     return result
@@ -104,33 +101,87 @@ class BudgetRepository:
             print("ERROR: ", e)
             return {"message": "Could not get all budgets"}
 
-    def get_card(self, card_id: int) -> Union[List[BudgetOut], Error]:
+    def get(self, budget_id: int) -> Union[BudgetOut, Error]:
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as db:
+                    result = db.execute(
+                        """
+                        SELECT id
+                             , bank
+                             , card
+                             , name
+                             , category
+                             , amount
+                        FROM budgets
+                        WHERE id = %s;
+                        """,
+                        [budget_id]
+                    )
+                    record = result.fetchone()
+                    if record is None:
+                        return {"message": "Invalid ID: Budget does not exist"}
+                    return BudgetOut(
+                        id=record[0],
+                        bank=record[1],
+                        card=record[2],
+                        name=record[3],
+                        category=record[4],
+                        amount=record[5]
+                    )
+        except Exception as e:
+            print("ERROR: ", e)
+            return {"message": "Invalid card ID. Could not get card."}
+
+    def get_banks(self) -> Union[List[BankOut], Error]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
                     db.execute(
                         """
-                        SELECT budgets.id
-                             , budgets.name
-                             , budgets.category
-                             , budgets.amount
-                             , budgets.card_id
+                        SELECT DISTINCT bank
                         FROM budgets
-                        JOIN cards ON (budgets.card_id = cards.id)
-                        WHERE budgets.card_id = %s
-                        """,
-                        [card_id]
+                        ORDER BY bank ASC;
+                        """
                     )
-                    results = []
-                    for row in db.fetchall():
-                        record = {}
-                        for i, column in enumerate(db.description):
-                            record[column.name] = row[i]
-                        results.append(BudgetOut(**record))
-                    return results
+                    result = []
+                    for record in db:
+                        bank = BankOut(
+                            bank=record[0]
+                        )
+                        result.append(bank)
+                    return result
         except Exception as e:
             print("ERROR: ", e)
-            return {"message": "Invalid card ID. Could not get card."}
+            return {"message": "Invalid Query. Could not select banks from database."}
+
+    def get_budget_by_bank(self, bank: str) -> Union[List[BudgetOut], Error]:
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as db:
+                    db.execute(
+                        """
+                        SELECT * FROM budgets
+                        WHERE bank = %s
+                        ORDER BY name ASC;
+                        """,
+                        [bank]
+                    )
+                    result = []
+                    for record in db:
+                        budget = BudgetOut(
+                            id=record[0],
+                            bank=record[1],
+                            card=record[2],
+                            name=record[3],
+                            category=record[4],
+                            amount=record[5]
+                        )
+                        result.append(budget)
+                    return result
+        except Exception as e:
+            print("ERROR: ", e)
+            return {"message": "Invalid Bank. Bank does not exist"}
 
     def update(self, budget_id: int, budget: UpdateBudgetIn) -> Union[BudgetOut, Error]:
         try:
