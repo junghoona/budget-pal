@@ -4,11 +4,21 @@ import styles from '../../style';
 
 
 function BudgetForm({ close }) {
+    const [bank, setBank] = useState('');
+    const [card, setCard] = useState('');
     const [name, setName] = useState('');
     const [category, setCategory] = useState('');
     const [amount, setAmount] = useState(0);
-    const [cards, setCards] = useState([]);
-    const [card, setCard] = useState('');
+
+    const handleBankChange = (e) => {
+        const value = e.target.value;
+        setBank(value);
+    };
+
+    const handleCardChange = (e) => {
+        const value = e.target.value;
+        setCard(value);
+    }
 
     const handleNameChange = (e) => {
         const value = e.target.value;
@@ -19,30 +29,15 @@ function BudgetForm({ close }) {
         const value = e.target.value;
         setAmount(value);
     }
-    
-    const fetchData = async () => {
-        const response = await fetch(
-            `${process.env.REACT_APP_API_HOST}/api/cards`
-        );
-        if (response.ok) {
-            const data = await response.json();
-            setCards(data);
-        } else {
-            console.error(`ERROR: ${response}`);
-        }
-    };
-        
-    useEffect(() => {
-        fetchData();
-    }, []);
         
     const handleSubmit = async (e) => {
         e.preventDefault();
         const data = {
+            bank: bank,
+            card: card,
             name: name,
             category: category,
-            amount: amount,
-            card_id: card,
+            amount: amount
         };
 
         const response = await fetch(
@@ -57,10 +52,11 @@ function BudgetForm({ close }) {
         );
         if (response.ok) {
             const newBudget = response.json();
-            setName('');
-            setCategory('');
-            setAmount(0);
+            setBank('');
             setCard('');
+            setName('');
+            setCategory("");
+            setAmount(0);
         } else {
             console.error(`ERROR: ${response}`);
         }
@@ -68,7 +64,7 @@ function BudgetForm({ close }) {
 
     return (
         <div className="min-h-screen py-6
-        flex flex-col justify-center sm:py-12">
+        flex flex-col justify-center sm:py-10">
             <div className="relative
             py-3 sm:max-w-xl sm:mx-auto">
                 <div className="relative px-4 py-8
@@ -85,6 +81,48 @@ function BudgetForm({ close }) {
                         className="bg-white w-full max-w-lg rounded-[20px]"
                         onSubmit={handleSubmit}
                     >
+                        <div className="flex flex-wrap mb-6">
+                            <div className="w-full md:w-1/2 px-3">
+                                <label
+                                    className="block uppercase tracking-wide
+                                    text-gray-700 text-xs font-bold mb-2" 
+                                    htmlFor="grid-bank"
+                                >
+                                    Bank
+                                </label>
+                                <input
+                                    className="appearance-none block w-full
+                                    bg-gray-200 text-gray-700 border border-gray-200
+                                    rounded py-3 px-4 mb-3 leading-tight
+                                    focus:outline-none focus:bg-white focus:border-gray-500"
+                                    id="grid-budget-name"
+                                    type="text"
+                                    onChange={handleBankChange}
+                                    placeholder="Enter Bank Name"
+                                    value={bank} 
+                                />
+                            </div>
+                            <div className="w-full md:w-1/2 px-3">
+                                <label
+                                    className="block uppercase tracking-wide
+                                    text-gray-700 text-xs font-bold mb-2" 
+                                    htmlFor="grid-card-name"
+                                >
+                                    Card
+                                </label>
+                                <input
+                                    className="appearance-none block w-full
+                                    bg-gray-200 text-gray-700 border border-gray-200
+                                    rounded py-3 px-4 mb-3 leading-tight
+                                    focus:outline-none focus:bg-white focus:border-gray-500"
+                                    id="grid-budget-name"
+                                    type="text"
+                                    onChange={handleCardChange}
+                                    placeholder="Enter Card Name"
+                                    value={card} 
+                                />
+                            </div>
+                        </div>
                         <div className="flex flex-wrap mb-6">
                             <div className="w-full px-6">
                                 <label
@@ -112,34 +150,6 @@ function BudgetForm({ close }) {
                                 <label
                                     className="block uppercase tracking-wide
                                     text-gray-700 text-xs font-bold mb-2"
-                                    htmlFor="card"
-                                >
-                                    Card
-                                </label>
-                                <select
-                                    onChange={(e) => setCard(e.target.value)}
-                                    required
-                                    className="form-select block w-full
-                                    bg-gray-200 text-gray-700 border border-gray-200 rounded
-                                    py-3 px-4 mb-3 focus:outline-none focus:border-gray-500"
-                                >
-                                    <option value="">Choose a Card</option>
-                                    {cards.map((card) => {
-                                        return (
-                                            <option
-                                                key={card.id}
-                                                value={card.id}
-                                            >
-                                                {card.bank} {card.name}
-                                            </option>
-                                        );
-                                    })}
-                                </select>
-                            </div>
-                            <div className="w-full md:w-1/2 px-3">
-                                <label
-                                    className="block uppercase tracking-wide
-                                    text-gray-700 text-xs font-bold mb-2"
                                     htmlFor="category"
                                 >
                                     Category
@@ -161,9 +171,7 @@ function BudgetForm({ close }) {
                                     <option value="Dining & Drinks">Dining & Drinks</option>
                                 </select>
                             </div>
-                        </div>
-                        <div className="flex flex-wrap mb-6">
-                            <div className="w-full px-6">
+                            <div className="w-full md:w-1/2 px-3">
                                 <label
                                     className="block uppercase tracking-wide
                                     text-gray-700 text-xs font-bold mb-2"

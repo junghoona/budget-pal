@@ -16,7 +16,7 @@ function TransactionBanner() {
         <section
             className={`${layout.sectionReverse}
             rounded-[20px] bg-teal-900 shadow-lg mb-10`}
-            data-aos="fade-right"
+            data-aos="fade-left"
             data-aos-duration="1500"
         >
             <div>

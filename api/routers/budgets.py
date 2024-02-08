@@ -5,6 +5,7 @@ from fastapi import (
     Response
 )
 from queries.budgets import (
+    BankOut,
     BudgetIn,
     BudgetOut,
     UpdateBudgetIn,
@@ -29,22 +30,44 @@ def create_budget(
 
 
 @router.get("/api/budgets/", response_model=Union[List[BudgetOut], Error])
-def get_budgets(
+def get_all(
     repo: BudgetRepository = Depends()
 ):
     return repo.get_all()
 
 
-@router.get("/api/cards/{card_id}/budgets/", response_model=Union[List[BudgetOut], Error])
-def get_budgets_in_card(
-    card_id: int,
+@router.get("/api/budgets/{budget_id}/", response_model=Union[BudgetOut, Error])
+def get_budget(
+    budget_id: int,
     response: Response,
     repo: BudgetRepository = Depends()
 ):
-    result = repo.get_card(card_id)
+    result = repo.get(budget_id)
     if result is None:
         response.status_code = 404
-        return {"message": "Invalid card ID. Card does not exist in database"}
+    return result
+
+
+@router.get("/api/banks/", response_model=Union[List[BankOut], Error])
+def get_banks(
+    response: Response,
+    repo: BudgetRepository = Depends()
+):
+    result = repo.get_banks()
+    if result is None:
+        response.status_code = 404
+    return result
+
+
+@router.get("/api/banks/{bank}/budgets/", response_model=Union[List[BudgetOut], Error])
+def get_bank_budgets(
+    bank: str,
+    response: Response,
+    repo: BudgetRepository = Depends()
+):
+    result = repo.get_budget_by_bank(bank)
+    if result is None:
+        response.status_code = 404
     return result
 
 

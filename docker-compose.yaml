@@ -12,7 +12,7 @@ services:
     ports:
       - 15432:5432
     env_file:
-      - source .env
+      - ./.env
     environment:
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_USER: ${POSTGRES_USER}
@@ -27,7 +27,7 @@ services:
     ports:
       - 8000:8000
     env_file:
-      - source .env
+      - ./.env
     environment:
       SIGNING_KEY: ${SIGNING_KEY}
       DATABASE_URL: ${DATABASE_URL}
@@ -44,7 +44,7 @@ services:
     ports:
       - "3000:3000"
     env_file:
-      - source .env
+      - ./.env
     environment:
       HOST_OS: ${OS}
       NODE_ENV: development

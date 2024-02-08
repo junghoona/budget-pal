@@ -6,6 +6,7 @@ from fastapi import (
 )
 from queries.cards import (
     Error,
+    BankOut,
     CardIn,
     CardOut,
     CardRepository
@@ -32,6 +33,13 @@ def get_cards(
     repo: CardRepository = Depends()
 ):
     return repo.get_all()
+
+
+@router.get("/api/banks/", response_model=Union[List[BankOut], Error])
+def get_banks(
+    repo: CardRepository = Depends()
+):
+    return repo.get_banks()
 
 
 @router.get("/api/banks/{bank_name}/cards/", response_model=Union[List[CardOut], Error])

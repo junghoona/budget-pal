@@ -7,8 +7,6 @@ function TransactionForm({ close }) {
     const [date, setDate] = useState('');
     const [price, setPrice] = useState(0);
     const [description, setDescription] = useState('');
-    const [cards, setCards] = useState([]);
-    const [card, setCard] = useState('');
     const [budgets, setBudgets] = useState([]);
     const [budget, setBudget] = useState('');
 
@@ -27,21 +25,9 @@ function TransactionForm({ close }) {
         setDescription(value);
     };
 
-    const fetchCards = async () => {
-        const response = await fetch(
-            `${process.env.REACT_APP_API_HOST}/api/cards`
-        );
-        if (response.ok) {
-            const data = await response.json();
-            setCards(data);
-        } else {
-            console.error(`ERROR: ${response}`);
-        }
-    };
-
     const fetchBudgets = async () => {
         const response = await fetch(
-            `${process.env.REACT_APP_API_HOST}/api/cards/${card}/budgets/`
+            `${process.env.REACT_APP_API_HOST}/api/budgets/`
         );
         if (response.ok) {
             const data = await response.json();
@@ -52,9 +38,8 @@ function TransactionForm({ close }) {
     };
 
     useEffect(() => {
-        fetchCards();
         fetchBudgets();
-    }, [card]);
+    }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -62,9 +47,10 @@ function TransactionForm({ close }) {
             date: date,
             price: price,
             description: description,
-            card_id: card,
             budget_id: budget,
         };
+
+        console.log('DATA: ', data);
         const response = await fetch(
             `${process.env.REACT_APP_API_HOST}/api/transactions/`,
             {
@@ -79,8 +65,6 @@ function TransactionForm({ close }) {
             setDate('');
             setPrice(0);
             setDescription('');
-            setCard('');
-            setBudget('');
         } else {
             console.error(`ERROR: ${response}`);
         }
@@ -128,35 +112,7 @@ function TransactionForm({ close }) {
                             </div>
                         </div>
                         <div className="flex flex-wrap mb-6">
-                            <div className="w-full md:w-1/2 px-3">
-                                <label
-                                    className="block uppercase tracking-wide
-                                    text-gray-700 text-xs font-bold mb-2"
-                                    htmlFor="card"
-                                >
-                                    Card
-                                </label>
-                                <select
-                                    onChange={(e) => setCard(e.target.value)}
-                                    required
-                                    className="form-select block w-full
-                                    bg-gray-200 text-gray-700 border border-gray-200 rounded
-                                    py-3 px-4 mb-3 focus:outline-none focus:border-gray-500"
-                                >
-                                    <option value="">Select Card</option>
-                                    {cards.map((card) => {
-                                        return (
-                                            <option
-                                                key={card.id}
-                                                value={card.id}
-                                            >
-                                                {card.bank} {card.name}
-                                            </option>
-                                        );
-                                    })}
-                                </select>
-                            </div>
-                            <div className="w-full md:w-1/2 px-3">
+                            <div className="w-full px-6">
                                 <label
                                     className="block uppercase tracking-wide
                                     text-gray-700 text-xs font-bold mb-2"

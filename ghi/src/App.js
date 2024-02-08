@@ -1,16 +1,13 @@
 import './App.css';
 import {
   Home,
-  CardForm,
-  CardsList,
-  Navbar
+  BudgetList,
 } from "./Components/index";
 import {
   BrowserRouter,
   Routes,
   Route
 } from 'react-router-dom';
-import styles from './style';
 
 
 function App() {
@@ -20,11 +17,8 @@ function App() {
     <BrowserRouter basename={basename}>
       <Routes>
         <Route exact path="/" element={<Home />} />
-        <Route path="cards/">
-          <Route index element={<CardsList />} />
-        </Route>
         <Route path="budgets/">
-          <Route></Route>
+          <Route index element={<BudgetList />} />
           <Route></Route>
         </Route>
         <Route path="transactions/">

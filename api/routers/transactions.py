@@ -44,21 +44,12 @@ def get_transaction(
     return repo.get_transaction(transaction_id)
 
 
-@router.get("/api/cards/{card_id}/transactions/", response_model=Union[List[TransactionInfoOut], Error])
-def get_card_transactions(
-    card_id: int,
-    repo: TransactionRepository = Depends()
-):
-    return repo.get_card_transactions(card_id)
-
-
-@router.get("/api/cards/{card_id}/budgets/{budget_id}/transactions/", response_model=Union[List[TransactionInfoOut], Error])
+@router.get("/api/budgets/{budget_id}/transactions/", response_model=Union[List[TransactionInfoOut], Error])
 def get_budget_transactions(
-    card_id: int,
     budget_id: int,
     repo: TransactionRepository = Depends()
 ):
-    return repo.get_budget_transactions(card_id, budget_id)
+    return repo.get_budget_transactions(budget_id)
 
 
 @router.put("/api/transactions/{transaction_id}/", response_model=Union[TransactionOut, Error])

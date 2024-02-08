@@ -1,25 +1,13 @@
-DROP TABLE IF EXISTS cards;
 DROP TABLE IF EXISTS budgets;
 DROP TABLE IF EXISTS transactions;
 
-CREATE TABLE cards (
-    id SERIAL PRIMARY KEY NOT NULL UNIQUE,
-    bank VARCHAR(100) NOT NULL,
-    name VARCHAR(150) NOT NULL UNIQUE,
-    current_balance INTEGER NOT NULL,
-    minimum_payment INTEGER NOT NULL,
-    credit_limit INTEGER NOT NULL,
-    card_number TEXT NOT NULL UNIQUE,
-    expiration_date DATE NOT NULL,
-    security_cvc INTEGER NOT NULL
-);
-
 CREATE TABLE budgets (
     id SERIAL PRIMARY KEY NOT NULL UNIQUE,
+    bank VARCHAR(50) NOT NULL,
+    card VARCHAR(100) NOT NULL,
     name VARCHAR(50) NOT NULL,
     category VARCHAR(100) NOT NULL,
-    amount INTEGER NOT NULL,
-    card_id INTEGER NOT NULL REFERENCES cards(id) ON DELETE CASCADE
+    amount INTEGER NOT NULL
 );
 
 CREATE TABLE transactions (
@@ -27,7 +15,6 @@ CREATE TABLE transactions (
     date TIMESTAMP NOT NULL,
     price NUMERIC(15, 2) NOT NULL,
     description TEXT NOT NULL,
-    card_id INTEGER NOT NULL REFERENCES cards(id) ON DELETE CASCADE,
     budget_id INTEGER NOT NULL REFERENCES budgets(id) ON DELETE CASCADE
 );
 

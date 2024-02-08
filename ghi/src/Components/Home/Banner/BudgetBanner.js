@@ -16,7 +16,7 @@ function BudgetBanner() {
     <section
       className={`${layout.section}
       rounded-[20px] bg-teal-900 shadow-lg mb-10`}
-      data-aos="fade-left"
+      data-aos="fade-right"
       data-aos-duration="1500"
     >
       <div className={`${layout.sectionInfo} ml-20`}>
