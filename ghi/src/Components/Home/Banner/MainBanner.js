@@ -10,7 +10,7 @@ const features = [
     id: 1,
     icon: budget,
     title: "Plan a Budget",
-    content: "We take proactive steps to make sure your information and transactions are secure",
+    content: "Create custom budgets for your specific needs and keep track of your expenses. Save more, spend less, see everything.",
   },
   {
     id: 2,

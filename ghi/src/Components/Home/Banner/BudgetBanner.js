@@ -20,13 +20,11 @@ function BudgetBanner() {
       data-aos-duration="1500"
     >
       <div className={`${layout.sectionInfo} ml-20`}>
-        <h2 className={styles.heading}>Find a
-        better card deal <br className='sm:block
-        hidden'/>in few easy steps.</h2>
+        <h2 className={styles.heading}>Create a budget <br className='sm:block
+        hidden'/>that works for you.</h2>
         <p className={`${styles.paragraph}
-        max-w-[470px] mt-5`}>Euismod in pellentesque
-          massa placerat. Sapien eget mi proin sed.
-          Egestas erat imperdiet sed euismod nisi.
+        max-w-[470px] mt-5`}>Create unlimited custom budgets <br />
+        (e.g. side projects, NFTs, etc.). <br /> 
         </p>
         <div className='flex flex-row flex-wrap
         sm:mt-10 mt-6'>

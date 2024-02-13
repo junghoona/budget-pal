@@ -40,10 +40,10 @@ const Hero = () => {
         ss:leading-[100px] leading-[75px] 
         w-full'>Simplified.</h1>
         <p className={`${styles.paragraph} max-w-[470px]
-        mt-5`}>This web application
-        methodology to identify the credit cards 
-        most likely to fit your needs. We examine
-        annual percentage rates, annual fees.</p>
+        mt-5`}>The application that will save you hundreds of dollars. <br />
+        We help you organize & optimize all your finances. <br />
+        Keep track of all your expenses. <br /> 
+        Create budgets that work for you.</p>
       </div>
 
       <div className={`flex-1 flex ${styles.flexCenter} md:my-0 my-10 relative`}> 
