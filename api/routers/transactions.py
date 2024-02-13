@@ -29,7 +29,7 @@ def create_transaction(
     return result
 
 
-@router.get("/api/transactions/", response_model=Union[List[TransactionInfoOut], Error])
+@router.get("/api/transactions/", response_model=Union[List[TransactionOut], Error])
 def get_transactions(
     repo: TransactionRepository = Depends()
 ):

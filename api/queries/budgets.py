@@ -37,8 +37,14 @@ class UpdateBudgetIn(BaseModel):
     amount: int
 
 
+# Bank Output Model
 class BankOut(BaseModel):
     bank: str
+
+
+# Category Output Model
+class CategoryOut(BaseModel):
+    category: str
 
 
 class BudgetRepository:

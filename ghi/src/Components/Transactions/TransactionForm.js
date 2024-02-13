@@ -49,8 +49,6 @@ function TransactionForm({ close }) {
             description: description,
             budget_id: budget,
         };
-
-        console.log('DATA: ', data);
         const response = await fetch(
             `${process.env.REACT_APP_API_HOST}/api/transactions/`,
             {

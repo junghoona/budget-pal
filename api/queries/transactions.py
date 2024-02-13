@@ -38,6 +38,7 @@ class TransactionOut(BaseModel):
     description: str
     bank: str
     budget: str
+    category: str
 
 
 # Output Model
@@ -96,6 +97,7 @@ class TransactionRepository:
                              , transactions.price
                              , transactions.description
                              , budgets.bank
+                             , budgets.name
                              , budgets.category
                         FROM transactions
                         JOIN budgets ON (transactions.budget_id = budgets.id)
@@ -110,29 +112,76 @@ class TransactionRepository:
                         price=record[1],
                         description=record[2],
                         bank=record[3],
-                        budget=record[4]
+                        budget=record[4],
+                        category=record[5]
                     )
         except Exception as e:
             print("ERROR: ", e)
             return {"message": "Could not create transaction"}
 
-    def get_all(self) -> Union[List[TransactionInfoOut], Error]:
+    def get_all(self) -> Union[List[TransactionOut], Error]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
-                    db.execute(
+                    records = db.execute(
                         """
-                        SELECT * FROM transactions
+                        SELECT transactions.id
+                             , transactions.date
+                             , transactions.price
+                             , transactions.description
+                             , budgets.bank
+                             , budgets.name
+                             , budgets.category
+                        FROM transactions
+                        JOIN budgets ON (transactions.budget_id = budgets.id)
                         ORDER BY date ASC;
                         """
                     )
                     result = []
-                    for record in db:
-                        transaction = TransactionInfoOut(
+                    for record in records:
+                        transaction = TransactionOut(
                             id=record[0],
                             date=record[1],
                             price=record[2],
-                            description=record[3]
+                            description=record[3],
+                            bank=record[4],
+                            budget=record[5],
+                            category=record[6]
+                        )
+                        result.append(transaction)
+                    return result
+        except Exception as e:
+            print("ERROR: ", e)
+            return {"message": "Could not get all transactions"}
+
+    def get_all_desc(self) -> Union[List[TransactionOut], Error]:
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as db:
+                    records = db.execute(
+                        """
+                        SELECT transactions.id
+                             , transactions.date
+                             , transactions.price
+                             , transactions.description
+                             , budgets.bank
+                             , budgets.name
+                             , budgets.category
+                        FROM transactions
+                        JOIN budgets ON (transactions.budget_id = budgets.id)
+                        ORDER BY date DESC;
+                        """
+                    )
+                    result = []
+                    for record in records:
+                        transaction = TransactionOut(
+                            id=record[0],
+                            date=record[1],
+                            price=record[2],
+                            description=record[3],
+                            bank=record[4],
+                            budget=record[5],
+                            category=record[6]
                         )
                         result.append(transaction)
                     return result
@@ -154,6 +203,7 @@ class TransactionRepository:
                              , transactions.price
                              , transactions.description
                              , budgets.bank
+                             , budgets.name
                              , budgets.category
                         FROM transactions
                         JOIN budgets ON (transactions.budget_id = budgets.id)
@@ -168,7 +218,8 @@ class TransactionRepository:
                         price=record[2],
                         description=record[3],
                         bank=record[4],
-                        budget=record[5]
+                        budget=record[5],
+                        category=record[6]
                     )
         except Exception as e:
             print("ERROR: ", e)

@@ -2,6 +2,8 @@ import './App.css';
 import {
   Home,
   BudgetList,
+  BudgetDetail,
+  TransactionList
 } from "./Components/index";
 import {
   BrowserRouter,
@@ -19,10 +21,10 @@ function App() {
         <Route exact path="/" element={<Home />} />
         <Route path="budgets/">
           <Route index element={<BudgetList />} />
-          <Route></Route>
+          <Route path=":budget_id" element={<BudgetDetail />} />
         </Route>
         <Route path="transactions/">
-          <Route></Route>
+          <Route index element={<TransactionList />} />
           <Route></Route>
         </Route>
       </Routes>

@@ -58,18 +58,18 @@ function BudgetList() {
     }, []);
 
     return (
-        <div className="bg-teal-600 w-full overflow-hidden">
+        <div className="bg-teal-800 w-full overflow-hidden">
             <div className={`${styles.paddingX} ${styles.flexCenter}`}>
                 <div className={`${styles.boxWidth}`}>
                     <Navbar />
                 </div>
             </div>
-            <div className={`bg-teal-600 ${styles.flexStart}`}>
+            <div className={`bg-teal-800 ${styles.flexStart}`}>
                 <div className={`${styles.boxWidth} mt-10 mb-10`}>
                     <Searchbar />
                 </div>
             </div>
-            <div className={`bg-teal-600 ${styles.paddingX} ${styles.flexStart}`}>
+            <div className={`bg-teal-800 ${styles.paddingX} ${styles.flexStart}`}>
                 <div className={`${styles.boxWidth}`}>
                     <section id="budgets" className={`flex 
                     md:flex-row flex-col ${styles.paddingY}`}>
@@ -266,7 +266,7 @@ function BudgetList() {
                     >
                         <div className={layout.sectionInfo}>
                             <div className={`${layout.sectionImg}
-                            flex-row space-x-40`}>
+                            flex-row space-x-20`}>
                                 {(category !== "Category" && bank !== "Bank") ? 
                                     (budgets.filter((budget) => (
                                         budget.bank === bank && budget.category === category)
