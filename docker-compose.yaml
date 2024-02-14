@@ -1,24 +1,14 @@
-volumes:
-  budget-pal:
-    external: true
-  pg-admin:
-    external: true
 services:
   postgres:
     image: postgres:14.5-bullseye
-    build:
-      context: data
-      dockerfile: Dockerfile.dev
-    volumes:
-      - budget-pal:/var/lib/postgresql/data
-    ports:
-      - 15432:5432
     env_file:
       - ./.env
     environment:
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_HOST: ${POSTGRES_HOST}
+      POSTGRES_PORT: ${POSTGRES_PORT}
 
   fastapi:
     build:
@@ -54,13 +44,3 @@ services:
       PUBLIC_URL: http://localhost:3000
       REACT_APP_API_HOST: http://localhost:8000
 
-  pg-admin:
-    image: dpage/pgadmin4
-    volumes:
-      - pg-admin:/var/lib/pgadmin
-    ports:
-      - 8082:80
-    environment:
-      PGADMIN_DEFAULT_EMAIL: junghoon_an@email.com
-      PGADMIN_DEFAULT_PASSWORD: budget
-      PGADMIN_DISABLE_POSTFIX: 1
