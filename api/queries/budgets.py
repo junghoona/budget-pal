@@ -4,7 +4,11 @@ from typing import List, Union
 import os
 
 
-pool = ConnectionPool(conninfo=os.environ["DATABASE_URL"])
+pool = ConnectionPool(conninfo=os.environ.get(
+    "DATABASE_URL",
+    default="postgresql://budget_user:budgetawsrds@budgetdb.cx4s0qai6851.us-west-1.rds.amazonaws.com:5432/postgres"
+    )
+)
 
 
 class Error(BaseModel):
