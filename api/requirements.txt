@@ -8,6 +8,7 @@ flake8==7.0.0
 h11==0.14.0
 httptools==0.6.1
 idna==3.6
+mangum==0.17.0
 mccabe==0.7.0
 mypy-extensions==1.0.0
 packaging==23.2
