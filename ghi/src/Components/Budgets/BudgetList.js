@@ -1,9 +1,7 @@
 import AOS from 'aos';
 import 'aos/dist/aos.css';
-import Navbar from '../Navbar';
 import {
-    Searchbar,
-    FilterDropdown,
+    Navbar,
     BudgetCard
 } from "../index";
 import styles, { layout } from '../../style';
@@ -13,9 +11,11 @@ function BudgetList() {
     const [banks, setBanks] = useState([]);
     const [bank, setBank] = useState('Bank');
     const [budgets, setBudgets] = useState([]);
+    const [searchTerm, setSearchTerm] = useState('');
     const [category, setCategory] = useState('Category');
     const [bankDropdown, setBankDropdown] = useState(false);
     const [categoryDropdown, setCategoryDropdown] = useState(false);
+    const [filteredBudgets, setFilteredBudgets] = useState(budgets);
 
     const fetchData = async () => {
         const response = await fetch(
@@ -51,6 +51,23 @@ function BudgetList() {
         setCategory(value);
     }
 
+    const handleInputChange = (e) => {
+        const value = e.target.value;
+        setSearchTerm(value);
+
+        const filteredItems = budgets.filter(budget =>
+            budget.name.toLowerCase().includes(value.toLowerCase())
+        );
+        setFilteredBudgets(filteredItems);
+    }
+
+    const handleSearchButton = () => {
+        const search = budgets.filter(budget =>
+            budget.name === searchTerm
+        );
+        setFilteredBudgets(search);
+    }
+
     useEffect(() => {
         AOS.init();
         fetchData();
@@ -66,7 +83,55 @@ function BudgetList() {
             </div>
             <div className={`bg-teal-800 ${styles.flexStart}`}>
                 <div className={`${styles.boxWidth} mt-10 mb-10`}>
-                    <Searchbar />
+                    <label 
+                        htmlFor="default-search"
+                        className="mb-2 text-sm font-medium text-gray-900
+                        sr-only dark:text-white"
+                    >
+                        Search
+                    </label>
+                    <div className="relative">
+                        <div className="absolute inset-y-0 start-0 flex
+                        items-center ps-3 pointer-events-none">
+                            <svg 
+                                className="w-4 h-4 text-gray-500 dark:text-gray-400"
+                                aria-hidden="true"
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 20 20"
+                            >
+                                <path
+                                    stroke="currentColor"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth="2"
+                                    d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+                                />
+                            </svg>
+                        </div>
+                        <input
+                            type="search"
+                            id="default-search"
+                            className="block w-full p-4 ps-10 text-sm
+                            text-gray-900 border border-gray-300
+                            rounded-lg bg-gray-50 focus:ring-blue-500
+                            focus:border-blue-500"
+                            placeholder="Enter search ..."
+                            required
+                            value={searchTerm}
+                            onChange={handleInputChange}
+                        />
+                        <button
+                            className="text-white absolute end-2.5 bottom-2.5
+                            bg-blue-700 hover:bg-blue-800 focus:ring-4
+                            focus:outline-none focus:ring-blue-300
+                            font-medium rounded-lg text-sm px-4 py-2"
+                            onClick={handleSearchButton}
+                            type="button"
+                        >
+                            Search
+                        </button>
+                    </div>
                 </div>
             </div>
             <div className={`bg-teal-800 ${styles.paddingX} ${styles.flexStart}`}>
@@ -267,28 +332,39 @@ function BudgetList() {
                         <div className={layout.sectionInfo}>
                             <div className={`${layout.sectionImg}
                             flex-row space-x-20`}>
-                                {(category !== "Category" && bank !== "Bank") ? 
-                                    (budgets.filter((budget) => (
+                                {searchTerm && filteredBudgets.length === 0
+                                ? <p>No Users Found</p>
+                                : (!searchTerm && filteredBudgets.length === 0)
+                                ? (budgets.map((budget, index) => (
+                                    <BudgetCard key={budget.id} {...
+                                        budget} index={index} />
+                                        )
+                                    )
+                                ) : (category !== "Category" && bank !== "Bank")
+                                ? (filteredBudgets.filter((budget) => (
                                         budget.bank === bank && budget.category === category)
                                     ).map((budget, index) => (
                                     <BudgetCard key={budget.id} {...
                                         budget} index={index} />
                                         )
-                                    )) : (category !== "Category") ? 
-                                    (budgets.filter((budget) => (
+                                    )
+                                ) : (category !== "Category")
+                                ? (filteredBudgets.filter((budget) => (
                                         budget.category === category)
                                     ).map((budget, index) => (
                                     <BudgetCard key={budget.id} {...
                                         budget} index={index} />
                                         )
-                                    )) : (bank !== "Bank") ? 
-                                    (budgets.filter((budget) => (
+                                    )
+                                ) : (bank !== "Bank")
+                                ? (filteredBudgets.filter((budget) => (
                                         budget.bank === bank)
                                     ).map((budget, index) => (
                                     <BudgetCard key={budget.id} {...
                                         budget} index={index} />
                                         )
-                                    )) : (budgets.map((budget, index) => (
+                                    )
+                                ) : (filteredBudgets.map((budget, index) => (
                                         <BudgetCard key={budget.id} {...
                                             budget} index={index} />
                                             )
@@ -301,7 +377,7 @@ function BudgetList() {
                 </div>
             </div>
             <div> 
-                <div className='absolute z-[0] w-[30%] h-[80%] rounded-full bottom-40 white__gradient' />
+                <div className='absolute z-[0] w-[10%] h-[80%] rounded-full bottom-40 white__gradient' />
             </div>
         </div>
     );
