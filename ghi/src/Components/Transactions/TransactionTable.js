@@ -26,12 +26,12 @@ function TransactionTable({
                         </p>
                     </div>
                 </td>
-                <td class="pl-24">
+                <td className="pl-24">
                     <div className="flex items-center">
                         <TransactionBudget id={id} />
                     </div>
                 </td>
-                <td class="pl-24">
+                <td className="pl-24">
                     <div className="flex items-center">
                         <p className="text-sm leading-none
                         text-gray-500 ml-2">
@@ -39,7 +39,7 @@ function TransactionTable({
                         </p>
                     </div>
                 </td>
-                <td class="pl-24">
+                <td className="pl-24">
                     <div className="flex items-center">
                         <p className="text-sm leading-none 
                         text-teal-500 ml-2">
