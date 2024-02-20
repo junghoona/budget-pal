@@ -27,7 +27,14 @@ function TransactionForm({ close }) {
 
     const fetchBudgets = async () => {
         const response = await fetch(
-            `${process.env.REACT_APP_API_HOST}/api/budgets/`
+            `${process.env.REACT_APP_API_HOST}/api/budgets/`, {
+                statusCode: 200,
+                headers: {
+                    "Access-Control-Allow-Headers" : "Content-Type",
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
+                },
+            }
         );
         if (response.ok) {
             const data = await response.json();
@@ -55,6 +62,9 @@ function TransactionForm({ close }) {
                 method: "POST",
                 body: JSON.stringify(data),
                 headers: {
+                    "Access-Control-Allow-Headers" : "Content-Type",
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Methods": "OPTIONS,POST,GET",
                     "Content-Type": "application/json",
                 },
             }

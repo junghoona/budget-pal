@@ -1,10 +1,7 @@
 import { Link } from "react-router-dom";
 import card from "../../Assets/card.png";
-import { 
-    Button,
-    BudgetDetail 
-} from "../index";
-import React, { useState, useEffect } from "react";
+import { Button } from "../index";
+import React from "react";
 
 function BudgetCard({
     id, bank, name, category, amount 
@@ -44,7 +41,7 @@ function BudgetCard({
                 </span>
                 <Link 
                     className="nav-link"
-                    to={`${process.env.REACT_APP_API_HOST}/budgets/${id}`}
+                    to={`${process.env.PUBLIC_URL}/budgets/${id}`}
                     role="button"
                 >
                     <Button content='View Details' />

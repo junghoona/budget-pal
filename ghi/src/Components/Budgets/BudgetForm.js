@@ -39,15 +39,18 @@ function BudgetForm({ close }) {
             category: category,
             amount: amount
         };
-
         const response = await fetch(
             `${process.env.REACT_APP_API_HOST}/api/budgets`,
             {
                 method: "POST",
                 body: JSON.stringify(data),
                 headers: {
+                    "Access-Control-Allow-Headers" : "Content-Type",
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Methods": "OPTIONS,POST,GET",
                     "Content-Type": "application/json",
                 },
+                statusCode: 200,
             }
         );
         if (response.ok) {
