@@ -1,7 +1,7 @@
-import { useNavigate } from "react-router-dom";
 import React from 'react'
 
-const Button = ({ styles, content, href }) => {
+
+const Button = ({ styles, content }) => {
   return (
     <button type='button' className={`py-4 px-4 
     bg-gradient-to-r from-emerald-300 to-emerald-400
@@ -12,4 +12,4 @@ const Button = ({ styles, content, href }) => {
   )
 }
 
-export default Button
+export default Button;

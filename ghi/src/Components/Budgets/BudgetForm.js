@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import budget from '../../Assets/budget.png';
 import styles from '../../style';
 
@@ -54,12 +54,12 @@ function BudgetForm({ close }) {
             }
         );
         if (response.ok) {
-            const newBudget = response.json();
             setBank('');
             setCard('');
             setName('');
             setCategory("");
             setAmount(0);
+            close();
         } else {
             console.error(`ERROR: ${response}`);
         }

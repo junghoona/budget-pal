@@ -1,6 +1,5 @@
 import React from 'react'
 import styles, { layout } from "../../../style";
-import card from "../../../Assets/credit-card.png";
 import budget from "../../../Assets/budget.png";
 import transaction from "../../../Assets/transaction.png";
 import Button from "../../Button";

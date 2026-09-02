@@ -11,45 +11,45 @@ function BudgetDetail() {
     const [budget, setBudget] = useState({});
     const { budget_id } = useParams();
 
-    const fetchData = async () => {
-        const response = await fetch(
-            `${process.env.REACT_APP_API_HOST}/api/budgets/${budget_id}/`, {
-                statusCode: 200,
-                headers: {
-                    "Access-Control-Allow-Headers" : "Content-Type",
-                    "Access-Control-Allow-Origin": "*",
-                    "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
-                },
-            }
-        );
-        if (response.ok) {
-            const data = await response.json();
-            console.log("DATA: ", data);
-        } else {
-            console.error(`ERROR: ${response}`);
-        }
-    };
-
-    const fetchTransactions = async () => {
-        const response = await fetch(
-            `${process.env.REACT_APP_API_HOST}/api/budgets/${budget_id}/transactions/`, {
-                statusCode: 200,
-                headers: {
-                    "Access-Control-Allow-Headers" : "Content-Type",
-                    "Access-Control-Allow-Origin": "*",
-                    "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
-                },
-            }
-        );
-        if (response.ok) {
-            const data = await response.json();
-            setTransactions(data);
-        } else {
-            console.error(`ERROR: ${response}`);
-        }
-    };
-
     useEffect(() => {
+        const fetchData = async () => {
+            const response = await fetch(
+                `${process.env.REACT_APP_API_HOST}/api/budgets/${budget_id}/`, {
+                    statusCode: 200,
+                    headers: {
+                        "Access-Control-Allow-Headers" : "Content-Type",
+                        "Access-Control-Allow-Origin": "*",
+                        "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
+                    },
+                }
+            );
+            if (response.ok) {
+                const data = await response.json();
+                setBudget(data);
+            } else {
+                console.error(`ERROR: ${response}`);
+            }
+        };
+
+        const fetchTransactions = async () => {
+            const response = await fetch(
+                `${process.env.REACT_APP_API_HOST}/api/budgets/${budget_id}/transactions/`, {
+                    statusCode: 200,
+                    headers: {
+                        "Access-Control-Allow-Headers" : "Content-Type",
+                        "Access-Control-Allow-Origin": "*",
+                        "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
+                    },
+                }
+            );
+            if (response.ok) {
+                const data = await response.json();
+                setTransactions(data);
+            } else {
+                console.error(`ERROR: ${response}`);
+            }
+        };
+
         fetchData();
         fetchTransactions();
     }, [budget_id]);
@@ -59,6 +59,18 @@ function BudgetDetail() {
             <div className={`${styles.paddingX} ${styles.flexCenter}`}>
                 <div className={`${styles.boxWidth}`}>
                     <Navbar />
+                </div>
+            </div>
+            <div className={`bg-teal-800 ${styles.paddingX} ${styles.flexStart}`}>
+                <div className={`${styles.boxWidth} mt-10 mb-10`}>
+                    <h1 className="font-poppins font-semibold text-[52px]
+                    text-white leading-[75px]">
+                        {budget.name}
+                    </h1>
+                    <p className="font-poppins text-white text-lg">
+                        {budget.bank} &middot; #{budget.category}
+                        &middot; ${budget.amount}.00
+                    </p>
                 </div>
             </div>
             <div className="sm:px-6 w-full">

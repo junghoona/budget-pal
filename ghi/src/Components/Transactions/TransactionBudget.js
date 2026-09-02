@@ -3,29 +3,31 @@ import React, { useState, useEffect } from "react";
 function TransactionBudget({ id }) {
     const [category, setCategory] = useState('');
     const [budget, setBudget] = useState('');
-    const fetchData = async () => {
-        const response = await fetch(
-            `${process.env.REACT_APP_API_HOST}/api/transactions/${id}/`, {
-                statusCode: 200,
-                headers: {
-                    "Access-Control-Allow-Headers" : "Content-Type",
-                    "Access-Control-Allow-Origin": "*",
-                    "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
-                },
-            }
-        );
-        if (response.ok) {
-            const data = await response.json();
-            setCategory(data.category);
-            setBudget(data.budget);
-        } else {
-            console.error(`ERROR: ${response}`);
-        }
-    }
 
     useEffect(() => {
+        const fetchData = async () => {
+            const response = await fetch(
+                `${process.env.REACT_APP_API_HOST}/api/transactions/${id}/`, {
+                    statusCode: 200,
+                    headers: {
+                        "Access-Control-Allow-Headers" : "Content-Type",
+                        "Access-Control-Allow-Origin": "*",
+                        "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
+                    },
+                }
+            );
+            if (response.ok) {
+                const data = await response.json();
+                setCategory(data.category);
+                setBudget(data.budget);
+            } else {
+                console.error(`ERROR: ${response}`);
+            }
+        };
+
         fetchData();
-    }, [id])
+    }, [id]);
+    
     return (
         <div>
             <span className="bg-red-100 text-red-800 text-xs 
